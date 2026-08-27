@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Colossus — Design System</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap');
+
+:root{
+  /* Superfícies */
+  --c-void:#0B0A10;
+  --c-obsidian:#17141D;
+  --c-obsidian-2:#211D29;
+  --c-line: rgba(212,175,55,0.18);
+
+  /* Ouro / marca */
+  --c-gold:#D4AF37;
+  --c-gold-bright:#F3D877;
+  --c-gold-deep:#8A6A1E;
+  --c-gold-mist: rgba(212,175,55,0.10);
+
+  /* Texto */
+  --c-ink:#F4EFE3;
+  --c-ink-dim:#9C9488;
+
+  /* Franquias */
+  --f-pokemon:#E0293E;
+  --f-marvel:#8055E8;
+  --f-yugioh:#E84393;
+  --f-dragonball:#FF7A29;
+  --f-football:#33B36B;
+
+  --font-display:'Cinzel', serif;
+  --font-body:'Manrope', sans-serif;
+  --font-data:'Space Mono', monospace;
+}
+
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;background:var(--c-void);}
+body{
+  font-family:var(--font-body);
+  color:var(--c-ink);
+  padding:0 0 6em;
+}
+
+.wrap{ max-width:1180px; margin:0 auto; padding:0 24px; }
+
+/* ---------- HERO ---------- */
+.hero{
+  padding:5em 24px 4em;
+  text-align:center;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(212,175,55,0.10), transparent 60%),
+    var(--c-void);
+  border-bottom:1px solid var(--c-line);
+}
+.hero__eyebrow{
+  font-family:var(--font-data);
+  font-size:12px;
+  letter-spacing:0.3em;
+  color:var(--c-gold);
+  text-transform:uppercase;
+  margin-bottom:1.2em;
+}
+.hero h1{
+  font-family:var(--font-display);
+  font-weight:700;
+  font-size:clamp(48px, 9vw, 92px);
+  letter-spacing:0.06em;
+  margin:0;
+  line-height:1;
+  background:linear-gradient(180deg, var(--c-gold-bright) 0%, var(--c-gold) 45%, var(--c-gold-deep) 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  filter: drop-shadow(0 2px 0 rgba(0,0,0,0.4));
+}
+.hero p.sub{
+  font-size:16px;
+  color:var(--c-ink-dim);
+  max-width:520px;
+  margin:1.4em auto 0;
+  line-height:1.6;
+}
+
+/* ---------- SECTION SCAFFOLDING ---------- */
+section.block{ padding:4.5em 0; border-bottom:1px solid var(--c-line); }
+section.block:last-of-type{ border-bottom:none; }
+.block__head{ margin-bottom:2.4em; }
+.block__eyebrow{
+  font-family:var(--font-data);
+  font-size:11px;
+  letter-spacing:0.25em;
+  color:var(--c-gold);
+  text-transform:uppercase;
+  margin:0 0 0.6em;
+}
+.block__title{
+  font-family:var(--font-display);
+  font-size:28px;
+  font-weight:600;
+  letter-spacing:0.02em;
+  margin:0;
+}
+.block__desc{
+  color:var(--c-ink-dim);
+  font-size:14.5px;
+  line-height:1.6;
+  max-width:640px;
+  margin:0.8em 0 0;
+}
+
+/* ---------- PALETTE ---------- */
+.palette-group{ margin-bottom:2.2em; }
+.palette-group h3{
+  font-family:var(--font-data);
+  font-size:12px;
+  letter-spacing:0.15em;
+  text-transform:uppercase;
+  color:var(--c-ink-dim);
+  margin:0 0 1em;
+}
+.swatches{
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(140px, 1fr));
+  gap:14px;
+}
+.swatch{
+  border-radius:12px;
+  overflow:hidden;
+  border:1px solid var(--c-line);
+  background:var(--c-obsidian);
+}
+.swatch__color{ height:64px; }
+.swatch__meta{ padding:10px 12px; }
+.swatch__name{ font-size:12.5px; font-weight:600; }
+.swatch__hex{ font-family:var(--font-data); font-size:11px; color:var(--c-ink-dim); margin-top:2px; }
+
+/* ---------- TYPE SPECIMENS ---------- */
+.type-row{
+  display:flex;
+  align-items:baseline;
+  gap:24px;
+  padding:1.6em 0;
+  border-top:1px solid var(--c-line);
+  flex-wrap:wrap;
+}
+.type-row:last-child{ border-bottom:1px solid var(--c-line); }
+.type-row__tag{
+  font-family:var(--font-data);
+  font-size:11px;
+  color:var(--c-gold);
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  width:150px;
+  flex-shrink:0;
+}
+.type-row__sample.display{ font-family:var(--font-display); font-weight:700; font-size:34px; letter-spacing:0.03em; }
+.type-row__sample.display.sub{ font-size:22px; font-weight:600; }
+.type-row__sample.body{ font-family:var(--font-body); font-size:16px; color:var(--c-ink); max-width:520px; line-height:1.6; }
+.type-row__sample.body.strong{ font-weight:700; }
+.type-row__sample.data{ font-family:var(--font-data); font-size:15px; letter-spacing:0.04em; color:var(--c-gold-bright); }
+.type-row__note{ font-size:12px; color:var(--c-ink-dim); margin-top:4px; }
+
+/* ---------- CARD SHOWCASE ---------- */
+.cards-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+  gap:34px;
+  padding-top:1.6em;
+}
+
+.ccard{
+  --accent: var(--c-gold);
+  position:relative;
+  border-radius:22px;
+  background:linear-gradient(160deg, var(--c-obsidian-2), var(--c-obsidian) 70%);
+  border:1px solid var(--c-gold-deep);
+  box-shadow:
+    0 0 0 1px rgba(212,175,55,0.08),
+    0 18px 40px rgba(0,0,0,0.55);
+  padding:14px 14px 18px;
+  transition:transform .25s ease, box-shadow .25s ease;
+}
+.ccard:hover{
+  transform:translateY(-6px);
+  box-shadow:0 0 0 1px rgba(212,175,55,0.25), 0 26px 50px rgba(0,0,0,0.6);
+}
+
+.ccard__frame{
+  border-radius:14px;
+  border:1px solid rgba(212,175,55,0.35);
+  padding:2px;
+  background:linear-gradient(145deg, rgba(212,175,55,0.16), transparent 40%);
+}
+
+.ccard__art{
+  position:relative;
+  height:150px;
+  border-radius:12px 12px 0 0;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 50% 20%, color-mix(in srgb, var(--accent) 35%, transparent), transparent 65%),
+    linear-gradient(180deg, color-mix(in srgb, var(--accent) 22%, #14121a), #14121a 85%);
+  display:flex; align-items:flex-end; justify-content:center;
+}
+.ccard__art svg{ width:86px; height:120px; filter:drop-shadow(0 10px 14px rgba(0,0,0,0.5)); }
+
+.ccard__band{
+  height:10px;
+  background:var(--accent);
+  clip-path:polygon(0 100%, 100% 100%, 92% 0, 8% 0);
+  margin:0 8px;
+  opacity:0.9;
+}
+
+.ccard__seal{
+  position:absolute;
+  top:10px; right:10px;
+  width:46px; height:46px;
+  border-radius:50%;
+  background:radial-gradient(circle at 35% 30%, var(--c-gold-bright), var(--c-gold) 55%, var(--c-gold-deep) 100%);
+  border:2px solid var(--accent);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  box-shadow:0 4px 10px rgba(0,0,0,0.45);
+  z-index:3;
+}
+.ccard__seal-score{ font-family:var(--font-data); font-weight:700; font-size:14px; color:#241B06; line-height:1; }
+.ccard__seal-label{ font-family:var(--font-data); font-size:7px; letter-spacing:0.05em; color:#4A3A0F; margin-top:1px; }
+
+.ccard__body{
+  background:linear-gradient(180deg, color-mix(in srgb, var(--accent) 16%, var(--c-obsidian)), var(--c-obsidian));
+  border-radius:0 0 12px 12px;
+  padding:14px 12px 12px;
+  border-top:1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+}
+
+.ccard__origin{
+  font-family:var(--font-data);
+  font-size:9.5px;
+  letter-spacing:0.12em;
+  color:var(--accent);
+  text-transform:uppercase;
+  margin-bottom:4px;
+}
+.ccard__name{
+  font-family:var(--font-display);
+  font-size:19px;
+  font-weight:600;
+  letter-spacing:0.02em;
+  margin:0 0 12px;
+  color:var(--c-ink);
+}
+
+.ccard__stats{ display:flex; gap:8px; }
+.stat{
+  flex:1;
+  text-align:center;
+  border:1px solid rgba(212,175,55,0.22);
+  border-radius:8px;
+  padding:6px 2px;
+  background:rgba(0,0,0,0.2);
+}
+.stat__label{ display:block; font-family:var(--font-data); font-size:9px; letter-spacing:0.06em; color:var(--c-ink-dim); }
+.stat__value{ display:block; font-family:var(--font-data); font-weight:700; font-size:15px; color:var(--c-gold-bright); margin-top:2px; }
+
+/* ---------- FOOTNOTE ---------- */
+.note{
+  font-size:12.5px;
+  color:var(--c-ink-dim);
+  border-left:2px solid var(--c-gold-deep);
+  padding-left:14px;
+  margin-top:2em;
+  max-width:680px;
+  line-height:1.6;
+}
+
+@media (max-width:640px){
+  .type-row{ gap:8px; }
+  .type-row__tag{ width:100%; }
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero__eyebrow">Design System — v0.1</div>
+  <h1>COLOSSUS</h1>
+  <p class="sub">Identidade visual premium/colecionável: uma moldura dourada única do jogo hospedando a cor de cada franquia de origem — Pokémon, Marvel/DC, Yu-Gi-Oh!, Dragon Ball e Futebol.</p>
+</div>
+
+<div class="wrap">
+
+  <!-- ================= PALETA ================= -->
+  <section class="block">
+    <div class="block__head">
+      <p class="block__eyebrow">01 — Cor</p>
+      <h2 class="block__title">Paleta</h2>
+      <p class="block__desc">O ouro é a marca — usado em molduras, selos e texto de destaque. As cores de franquia identificam a origem do personagem sem nunca competir com o dourado.</p>
+    </div>
+
+    <div class="palette-group">
+      <h3>Superfícies</h3>
+      <div class="swatches">
+        <div class="swatch"><div class="swatch__color" style="background:#0B0A10"></div><div class="swatch__meta"><div class="swatch__name">Void</div><div class="swatch__hex">#0B0A10</div></div></div>
+        <div class="swatch"><div class="swatch__color" style="background:#17141D"></div><div class="swatch__meta"><div class="swatch__name">Obsidian</div><div class="swatch__hex">#17141D</div></div></div>
+        <div class="swatch"><div class="swatch__color" style="background:#211D29"></div><div class="swatch__meta"><div class="swatch__name">Obsidian 2</div><div class="swatch__hex">#211D29</div></div></div>
+      </div>
+    </div>
+
+    <div class="palette-group">
+      <h3>Ouro / marca</h3>
+      <div class="swatches">
+        <div class="swatch"><div class="swatch__color" style="background:#F3D877"></div><div class="swatch__meta"><div class="swatch__name">Gold Bright</div><div class="swatch__hex">#F3D877</div></div></div>
+        <div class="swatch"><div class="swatch__color" style="background:#D4AF37"></div><div class="swatch__meta"><div class="swatch__name">Gold</div><div class="swatch__hex">#D4AF37</div></div></div>
+        <div class="swatch"><div class="swatch__color" style="background:#8A6A1E"></div><div class="swatch__meta"><div class="swatch__name">Gold Deep</div><div class="swatch__hex">#8A6A1E</div></div></div>
+      </div>
+    </div>
+
+    <div class="palette-group">
+      <h3>Texto</h3>
+      <div class="swatches">
+        <div class="swatch"><div class="swatch__color" style="background:#F4EFE3"></div><div class="swatch__meta"><div class="swatch__name">Ink</div><div class="swatch__hex">#F4EFE3</div></div></div>
+        <div class="swatch"><div class="swatch__color" style="background:#9C9488"></div><div class="swatch__meta"><div class="swatch__name">Ink Dim</div><div class="swatch__hex">#9C9488</div></div></div>
+      </div>
+    </div>
+
+    <div class="palette-group">
+      <h3>Franquias (atuais)</h3>
+      <div class="swatches">
+        <div class="swatch"><div class="swatch__color" style="background:#E0293E"></div><div class="swatch__meta"><div class="swatch__name">Pokémon</div><div class="swatch__hex">#E0293E</div></div></div>
+        <div class="swatch"><div class="swatch__color" style="background:#8055E8"></div><div class="swatch__meta"><div class="swatch__name">Marvel/DC</div><div class="swatch__hex">#8055E8</div></div></div>
+        <div class="swatch"><div class="swatch__color" style="background:#E84393"></div><div class="swatch__meta"><div class="swatch__name">Yu-Gi-Oh!</div><div class="swatch__hex">#E84393</div></div></div>
+        <div class="swatch"><div class="swatch__color" style="background:#FF7A29"></div><div class="swatch__meta"><div class="swatch__name">Dragon Ball</div><div class="swatch__hex">#FF7A29</div></div></div>
+        <div class="swatch"><div class="swatch__color" style="background:#33B36B"></div><div class="swatch__meta"><div class="swatch__name">Futebol</div><div class="swatch__hex">#33B36B</div></div></div>
+      </div>
+    </div>
+
+    <div class="palette-group">
+      <h3>Franquias (propostas — a confirmar)</h3>
+      <div class="swatches">
+        <div class="swatch" style="border-color:var(--c-gold)"><div class="swatch__color" style="background:#17B8D9"></div><div class="swatch__meta"><div class="swatch__name">Digimon</div><div class="swatch__hex">#17B8D9</div></div></div>
+        <div class="swatch" style="border-color:var(--c-gold)"><div class="swatch__color" style="background:#2F63E5"></div><div class="swatch__meta"><div class="swatch__name">One Piece</div><div class="swatch__hex">#2F63E5</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TIPOGRAFIA ================= -->
+  <section class="block">
+    <div class="block__head">
+      <p class="block__eyebrow">02 — Tipo</p>
+      <h2 class="block__title">Tipografia</h2>
+      <p class="block__desc">Três papéis, três vozes: uma serifada monumental para o nome do jogo (o "titã"), uma sans neutra para a interface, e uma mono para os números — o dado frio por trás de cada personagem.</p>
+    </div>
+
+    <div class="type-row">
+      <div class="type-row__tag">Display / Cinzel</div>
+      <div>
+        <div class="type-row__sample display">Colossus</div>
+        <div class="type-row__note">Logo, títulos de seção — peso 700, sempre com leve tracking</div>
+      </div>
+    </div>
+    <div class="type-row">
+      <div class="type-row__tag">Display / sub</div>
+      <div>
+        <div class="type-row__sample display sub">Nome do personagem</div>
+        <div class="type-row__note">Nome do card — peso 600, tamanho 18–20px</div>
+      </div>
+    </div>
+    <div class="type-row">
+      <div class="type-row__tag">Body / Manrope</div>
+      <div>
+        <div class="type-row__sample body">Escolha seu time antes que o tempo acabe. Cada personagem custa de acordo com o seu overall.</div>
+        <div class="type-row__note">Texto de interface — peso 400/500, 14–16px</div>
+      </div>
+    </div>
+    <div class="type-row">
+      <div class="type-row__tag">Body / ênfase</div>
+      <div>
+        <div class="type-row__sample body strong">Confirmar time</div>
+        <div class="type-row__note">Botões e rótulos de ação — peso 700, caixa normal</div>
+      </div>
+    </div>
+    <div class="type-row">
+      <div class="type-row__tag">Data / Space Mono</div>
+      <div>
+        <div class="type-row__sample data">ATK 088 · DEF 074 · OVR 92</div>
+        <div class="type-row__note">Stats, preços, timers — sempre numérico ou curto</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CARDS ================= -->
+  <section class="block">
+    <div class="block__head">
+      <p class="block__eyebrow">03 — Componente</p>
+      <h2 class="block__title">Card de personagem</h2>
+      <p class="block__desc">Moldura dourada fixa (a marca Colossus) + cor de franquia variável (a origem). O selo no canto mostra o Overall — o número que nasce do percentil, não um enfeite solto. O atributo individual muda por franquia, refletindo o modelo de dados real.</p>
+    </div>
+
+    <div class="cards-grid">
+
+      <!-- POKÉMON -->
+      <div class="ccard" style="--accent:#E0293E">
+        <div class="ccard__seal"><span class="ccard__seal-score">92</span><span class="ccard__seal-label">OVR</span></div>
+        <div class="ccard__art">
+          <svg viewBox="0 0 60 84" fill="none"><ellipse cx="30" cy="60" rx="22" ry="20" fill="#E0293E"/><circle cx="30" cy="28" r="18" fill="#F4EFE3"/><circle cx="23" cy="26" r="3" fill="#17141D"/><circle cx="37" cy="26" r="3" fill="#17141D"/><path d="M18 36 Q30 44 42 36" stroke="#17141D" stroke-width="2" fill="none"/></svg>
+        </div>
+        <div class="ccard__band"></div>
+        <div class="ccard__body">
+          <div class="ccard__origin">Pokémon · Criatura</div>
+          <h3 class="ccard__name">Voltbeak</h3>
+          <div class="ccard__stats">
+            <div class="stat"><span class="stat__label">ATK</span><span class="stat__value">88</span></div>
+            <div class="stat"><span class="stat__label">DEF</span><span class="stat__value">74</span></div>
+            <div class="stat"><span class="stat__label">SPD</span><span class="stat__value">95</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MARVEL/DC -->
+      <div class="ccard" style="--accent:#8055E8">
+        <div class="ccard__seal"><span class="ccard__seal-score">85</span><span class="ccard__seal-label">OVR</span></div>
+        <div class="ccard__art">
+          <svg viewBox="0 0 60 90" fill="none"><path d="M30 6 L48 18 L44 74 L30 84 L16 74 L12 18 Z" fill="#8055E8"/><circle cx="30" cy="26" r="10" fill="#F4EFE3"/></svg>
+        </div>
+        <div class="ccard__band"></div>
+        <div class="ccard__body">
+          <div class="ccard__origin">Marvel/DC · Herói</div>
+          <h3 class="ccard__name">Ironclad</h3>
+          <div class="ccard__stats">
+            <div class="stat"><span class="stat__label">ATK</span><span class="stat__value">80</span></div>
+            <div class="stat"><span class="stat__label">DEF</span><span class="stat__value">91</span></div>
+            <div class="stat"><span class="stat__label">PWR</span><span class="stat__value">83</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- YU-GI-OH -->
+      <div class="ccard" style="--accent:#E84393">
+        <div class="ccard__seal"><span class="ccard__seal-score">78</span><span class="ccard__seal-label">OVR</span></div>
+        <div class="ccard__art">
+          <svg viewBox="0 0 60 84" fill="none"><polygon points="30,6 54,42 30,78 6,42" fill="#E84393"/><circle cx="30" cy="42" r="9" fill="#F4EFE3"/></svg>
+        </div>
+        <div class="ccard__band"></div>
+        <div class="ccard__body">
+          <div class="ccard__origin">Yu-Gi-Oh! · Monstro</div>
+          <h3 class="ccard__name">Runeblade</h3>
+          <div class="ccard__stats">
+            <div class="stat"><span class="stat__label">ATK</span><span class="stat__value">76</span></div>
+            <div class="stat"><span class="stat__label">DEF</span><span class="stat__value">70</span></div>
+            <div class="stat"><span class="stat__label">LVL</span><span class="stat__value">7</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DRAGON BALL -->
+      <div class="ccard" style="--accent:#FF7A29">
+        <div class="ccard__seal"><span class="ccard__seal-score">90</span><span class="ccard__seal-label">OVR</span></div>
+        <div class="ccard__art">
+          <svg viewBox="0 0 60 90" fill="none"><path d="M30 84 C14 84 8 66 14 52 C10 44 14 30 24 26 C22 16 30 6 30 6 C30 6 38 16 36 26 C46 30 50 44 46 52 C52 66 46 84 30 84 Z" fill="#FF7A29"/></svg>
+        </div>
+        <div class="ccard__band"></div>
+        <div class="ccard__body">
+          <div class="ccard__origin">Dragon Ball · Guerreiro</div>
+          <h3 class="ccard__name">Kaion</h3>
+          <div class="ccard__stats">
+            <div class="stat"><span class="stat__label">ATK</span><span class="stat__value">93</span></div>
+            <div class="stat"><span class="stat__label">DEF</span><span class="stat__value">85</span></div>
+            <div class="stat"><span class="stat__label">HP</span><span class="stat__value">97</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FUTEBOL -->
+      <div class="ccard" style="--accent:#33B36B">
+        <div class="ccard__seal"><span class="ccard__seal-score">81</span><span class="ccard__seal-label">OVR</span></div>
+        <div class="ccard__art">
+          <svg viewBox="0 0 60 90" fill="none"><circle cx="30" cy="20" r="10" fill="#33B36B"/><path d="M18 40 L30 34 L42 40 L38 70 L30 84 L22 70 Z" fill="#33B36B"/></svg>
+        </div>
+        <div class="ccard__band"></div>
+        <div class="ccard__body">
+          <div class="ccard__origin">Futebol · Jogador</div>
+          <h3 class="ccard__name">R. Santos</h3>
+          <div class="ccard__stats">
+            <div class="stat"><span class="stat__label">ATK</span><span class="stat__value">79</span></div>
+            <div class="stat"><span class="stat__label">DEF</span><span class="stat__value">61</span></div>
+            <div class="stat"><span class="stat__label">PACE</span><span class="stat__value">92</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <p class="note">Arte-placeholder: os ícones acima são formas abstratas apenas para demonstrar a moldura. A arte real de cada card virá das próprias fontes de importação (sprite da PokéAPI, render da Superhero API, etc.), recortada e composta dentro do mesmo box <code>.ccard__art</code>.</p>
+  </section>
+
+</div>
+</body>
+</html>
