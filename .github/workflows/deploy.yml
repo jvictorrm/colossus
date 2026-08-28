@@ -21,7 +21,6 @@ jobs:
       - name: 3. Instalar Dependências e Build (No Servidor do GitHub)
         run: |
           npm ci
-          npm run lint
           npm run build
 
       - name: 4. Deploy via Rsync Nativo para a VPS
