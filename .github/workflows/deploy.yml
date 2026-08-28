@@ -18,25 +18,27 @@ jobs:
           node-version: "22"
           cache: "npm"
 
-      - name: 3. Instalar Dependências e Fazer Lint
+      - name: 3. Instalar Dependências e Build (No Servidor do GitHub)
         run: |
           npm ci
           npm run lint
+          npm run build
 
-      - name: 4. Build da Aplicação Next.js
-        run: npm run build
+      - name: 4. Deploy via Rsync Nativo para a VPS
+        env:
+          SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+          HOST: ${{ secrets.VPS_HOST }}
+          USER: ${{ secrets.VPS_USER }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          # Evita o erro de confirmação de "nova máquina" no SSH
+          ssh-keyscan -H $HOST >> ~/.ssh/known_hosts
+          # Sincroniza os arquivos, enviando a pasta .next pronta e ignorando o node_modules gigante
+          rsync -avz --delete --exclude='.git' --exclude='node_modules' -e "ssh -i ~/.ssh/deploy_key" ./ $USER@$HOST:/var/www/colossus/
 
-      - name: 5. Deploy via SSH para a VPS
-        uses: appleboy/rsync-action@master
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.VPS_SSH_KEY }}
-          source: "./"
-          target: "/var/www/colossus"
-          args: "-avz --delete --exclude='.git' --exclude='node_modules' --exclude='.next'"
-
-      - name: 6. Build no Servidor e Reload do PM2
+      - name: 5. Inicializar o Jogo (Na VPS)
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.VPS_HOST }}
@@ -44,7 +46,8 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
             cd /var/www/colossus
+            # Instala apenas as bibliotecas necessárias para rodar (ignora as de dev)
             npm install --omit=dev
-            npm run build
+            # Se o pm2 já estiver rodando o colossus, ele reinicia. Se não, ele cria.
             pm2 describe colossus > /dev/null 2>&1 && pm2 reload colossus || pm2 start server.js --name colossus
             pm2 save
