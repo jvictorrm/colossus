@@ -1,0 +1,50 @@
+name: CI/CD Pipeline - Colossus Game
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 1. Checkout do Código
+        uses: actions/checkout@v4
+
+      - name: 2. Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: 3. Instalar Dependências e Fazer Lint
+        run: |
+          npm ci
+          npm run lint
+
+      - name: 4. Build da Aplicação Next.js
+        run: npm run build
+
+      - name: 5. Deploy via SSH para a VPS
+        uses: appleboy/rsync-action@master
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          source: "./"
+          target: "/var/www/colossus"
+          args: "-avz --delete --exclude='.git' --exclude='node_modules' --exclude='.next'"
+
+      - name: 6. Build no Servidor e Reload do PM2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            cd /var/www/colossus
+            npm install --omit=dev
+            npm run build
+            pm2 describe colossus > /dev/null 2>&1 && pm2 reload colossus || pm2 start server.js --name colossus
+            pm2 save
