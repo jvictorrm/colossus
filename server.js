@@ -2,7 +2,6 @@ import Sentry from "@sentry/nextjs";
 import next from "next";
 import { createServer } from "node:http";
 import { Server } from "socket.io";
-import "./sentry.server.config.ts";
 import { logger } from "./src/lib/logger.ts";
 
 const dev = process.env.NODE_ENV !== "production";
