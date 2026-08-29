@@ -27,6 +27,9 @@ jobs:
       - name: 5. Prepara Ambiente E2E (Navegadores)
         run: npx playwright install --with-deps
 
+      - name: 5.5. Cria .env temporário para o CI
+        run: touch .env
+
       - name: 6. Validação End-to-End (Socket e Integração)
         run: npm run test:e2e
 
