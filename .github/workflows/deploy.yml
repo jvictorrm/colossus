@@ -12,10 +12,10 @@ jobs:
       - name: 1. Checkout do Código
         uses: actions/checkout@v4
 
-      - name: 2. Setup Node.js 22
+      - name: 2. Setup Node.js 24
         uses: actions/setup-node@v4
         with:
-          node-version: "22"
+          node-version: "24"
           cache: "npm"
 
       - name: 3. Instalar Dependências
