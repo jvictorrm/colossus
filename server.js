@@ -1,4 +1,4 @@
-import { captureException } from "@sentry/nextjs"; // Importação direta corrigida
+import Sentry from "@sentry/nextjs";
 import next from "next";
 import { createServer } from "node:http";
 import { Server } from "socket.io";
@@ -31,10 +31,11 @@ app.prepare().then(() => {
           "Falha na base de dados",
         );
 
-        // Uso da função sem o prefixo Sentry.
-        captureException(error, {
-          tags: { modulo: "socket.io", socketId: socket.id },
-        });
+        if (!dev) {
+          Sentry.captureException(error, {
+            tags: { modulo: "socket.io", socketId: socket.id },
+          });
+        }
       }
     });
 
@@ -52,7 +53,10 @@ app.prepare().then(() => {
         { event: "server_crash", err },
         "Erro crítico no servidor HTTP",
       );
-      captureException(err);
+
+      if (!dev) {
+        Sentry.captureException(err);
+      }
       process.exit(1);
     })
     .listen(port, () => {
