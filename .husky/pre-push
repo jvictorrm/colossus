@@ -1,0 +1,2 @@
+echo "🧪 Rodando testes unitários antes do push..."
+npm run test || { echo "❌ Falha nos testes! Corrija o código antes de enviar."; exit 1; }

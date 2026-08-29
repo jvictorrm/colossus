@@ -1,0 +1,14 @@
+echo "🧹 Rodando lint-staged (apenas arquivos alterados)..."
+npx lint-staged || exit 1
+
+echo "🔍 Verificando tipagem (TypeScript)..."
+npx tsc --noEmit || { echo "❌ Falha no TypeScript."; exit 1; }
+
+# Bloqueio de segurança do package-lock.json
+if git diff --cached --name-only | grep -q "^package\.json$"; then
+  if ! git diff --cached --name-only | grep -q "^package-lock\.json$"; then
+    echo "🚨 BLOQUEADO: O package.json foi alterado, mas o package-lock.json ficou de fora."
+    echo "💡 Rode: git add package-lock.json"
+    exit 1 
+  fi
+fi
