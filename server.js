@@ -18,21 +18,21 @@ app.prepare().then(() => {
   io.on("connection", (socket) => {
     logger.info(
       { event: "player_connected", socketId: socket.id },
-      "Novo jogador conectado",
+      "New player connected",
     );
 
-    socket.on("acao_do_jogo", async (dados) => {
+    socket.on("game_action", async (data) => {
       try {
-        // Lógica futura do Drizzle ORM
+        // Future Drizzle ORM logic
       } catch (error) {
         logger.error(
           { event: "db_error", err: error },
-          "Falha na base de dados",
+          "Database failure",
         );
 
         if (!dev) {
           Sentry.captureException(error, {
-            tags: { modulo: "socket.io", socketId: socket.id },
+            tags: { module: "socket.io", socketId: socket.id },
           });
         }
       }
@@ -41,7 +41,7 @@ app.prepare().then(() => {
     socket.on("disconnect", () => {
       logger.warn(
         { event: "player_disconnected", socketId: socket.id },
-        "Jogador desconectado",
+        "Player disconnected",
       );
     });
   });
@@ -50,7 +50,7 @@ app.prepare().then(() => {
     .once("error", (err) => {
       logger.error(
         { event: "server_crash", err },
-        "Erro crítico no servidor HTTP",
+        "Critical HTTP server error",
       );
 
       if (!dev) {
@@ -61,11 +61,12 @@ app.prepare().then(() => {
     .listen(port, () => {
       logger.info(
         {
-          event: "sistema_iniciado",
-          porta: port,
-          ambiente: dev ? "desenvolvimento" : "producao",
+          event: "system_started",
+          port,
+          environment: dev ? "development" : "production",
         },
-        `> Servidor do Colossus pronto na porta ${port}`,
+        `> Colossus server ready on port ${port}`,
       );
     });
 });
+
