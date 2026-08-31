@@ -12,5 +12,5 @@ export const logger = pino(
           token: process.env.AXIOM_TOKEN,
         },
       })
-    : undefined, // Cai no comportamento padrão de log local
+    : undefined, // Falls back to default local logging behavior
 );
