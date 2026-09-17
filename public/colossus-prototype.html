@@ -1,0 +1,1258 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Colossus — Protótipo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800&family=Manrope:wght@300;400;500;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --void: #0B0A10;
+  --obsidian: #17141D;
+  --obsidian-2: #211D29;
+  --line: rgba(212,175,55,0.18);
+  --gold-bright: #F3D877;
+  --gold: #D4AF37;
+  --gold-deep: #8A6A1E;
+  --gold-mist: rgba(212,175,55,0.10);
+  --ink: #F4EFE3;
+  --ink-dim: #9C9488;
+  --pokemon: #E0293E;
+  --marvel: #8055E8;
+  --yugioh: #E84393;
+  --dragonball: #FF7A29;
+  --football: #33B36B;
+  --digimon: #17B8D9;
+  --onepiece: #2F63E5;
+  --success: #33B36B;
+  --danger: #E0293E;
+  --warning: #F3C522;
+  --font-display: 'Cinzel', serif;
+  --font-body: 'Manrope', sans-serif;
+  --font-data: 'Space Mono', monospace;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 14px;
+  --radius-xl: 22px;
+  --shadow-card: 0 0 0 1px rgba(212,175,55,0.08), 0 18px 40px rgba(0,0,0,0.55);
+  --shadow-card-hover: 0 0 0 1px rgba(212,175,55,0.25), 0 26px 50px rgba(0,0,0,0.6);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  height: 100%;
+  background: var(--void);
+  font-family: var(--font-body);
+  color: var(--ink);
+  overflow: hidden;
+}
+
+body { display: flex; }
+
+/* ── Sidebar ── */
+.sidebar {
+  width: 240px;
+  background: var(--obsidian);
+  border-right: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  padding: 24px 16px;
+  gap: 8px;
+}
+.sidebar h2 {
+  font-family: var(--font-display);
+  font-size: 14px;
+  color: var(--gold);
+  letter-spacing: 0.15em;
+  margin-bottom: 8px;
+}
+.sidebar button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--ink-dim);
+  font-family: var(--font-body);
+  font-size: 13px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s ease;
+}
+.sidebar button:hover { background: var(--obsidian-2); color: var(--ink); }
+.sidebar button.active {
+  background: var(--obsidian-2);
+  border-color: var(--gold);
+  color: var(--gold);
+}
+.sidebar button .num {
+  font-family: var(--font-data);
+  font-size: 11px;
+  color: var(--ink-dim);
+  margin-left: auto;
+}
+
+/* ── Main ── */
+.main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  background:
+    radial-gradient(ellipse at center, rgba(212,175,55,0.04) 0%, transparent 70%),
+    var(--void);
+}
+
+/* ── Phone Frame ── */
+.phone {
+  width: 390px;
+  height: 844px;
+  background: var(--obsidian);
+  border-radius: 36px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-card);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Status Bar */
+.status-bar {
+  height: 44px;
+  background: var(--obsidian-2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 28px;
+  font-family: var(--font-data);
+  font-size: 11px;
+  color: var(--ink-dim);
+}
+
+/* Screen content area */
+.screen {
+  flex: 1;
+  overflow-y: auto;
+  position: relative;
+  display: none;
+}
+.screen.active { display: block; }
+
+.screen-content { padding: 20px 20px 32px; }
+
+/* ── TOP BAR ── */
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0 16px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 20px;
+}
+.top-bar .back-btn {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink-dim);
+  font-size: 18px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.top-bar .back-btn:hover { background: var(--obsidian-2); color: var(--ink); }
+.top-bar .title {
+  font-family: var(--font-display);
+  font-size: 14px;
+  color: var(--gold);
+  letter-spacing: 0.08em;
+}
+
+/* ── CARD DE PERSONAGEM ── */
+.char-card {
+  background:
+    linear-gradient(160deg, var(--obsidian-2), var(--obsidian));
+  border: 1px solid var(--gold-deep);
+  border-radius: var(--radius-xl);
+  padding: 10px;
+  box-shadow: var(--shadow-card);
+  transition: all 0.25s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.char-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-card-hover); }
+.char-card .card-inner {
+  border: 1px solid rgba(212,175,55,0.18);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background:
+    linear-gradient(145deg, rgba(212,175,55,0.04), transparent 50%);
+}
+.char-card .card-art {
+  height: 100px;
+  background: var(--obsidian-2);
+  position: relative;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 32px;
+}
+.char-card .card-band {
+  height: 6px;
+  width: 70%;
+  margin: 0 auto;
+  clip-path: polygon(15% 0, 85% 0, 100% 100%, 0% 100%);
+}
+.char-card .card-seal {
+  position: absolute;
+  top: 14px; right: 14px;
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 35%, var(--gold-bright), var(--gold) 60%, var(--gold-deep));
+  border: 2px solid currentColor;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  color: var(--void);
+}
+.char-card .card-seal .ovr-num {
+  font-family: var(--font-data);
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 1;
+}
+.char-card .card-seal .ovr-label {
+  font-family: var(--font-data);
+  font-size: 7px;
+  letter-spacing: 0.1em;
+}
+.char-card .card-body {
+  padding: 8px 10px 10px;
+  background:
+    linear-gradient(to bottom, currentColor, currentColor 1px, transparent 1px),
+    linear-gradient(to top, rgba(0,0,0,0.3), transparent),
+    var(--obsidian);
+  background-blend-mode: normal, normal;
+}
+.char-card .card-origin {
+  font-family: var(--font-data);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: 2px;
+}
+.char-card .card-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--ink);
+}
+.char-card .card-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  margin-top: 8px;
+}
+.stat-box {
+  text-align: center;
+  padding: 4px 2px;
+  border: 1px solid rgba(212,175,55,0.12);
+  border-radius: var(--radius-sm);
+  background: rgba(0,0,0,0.25);
+}
+.stat-label {
+  font-family: var(--font-data);
+  font-size: 8px;
+  color: var(--ink-dim);
+  letter-spacing: 0.05em;
+}
+.stat-value {
+  font-family: var(--font-data);
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--gold-bright);
+}
+
+/* ── BUTTONS ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: var(--radius-md);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.btn-primary {
+  background: var(--gold);
+  color: var(--void);
+}
+.btn-primary:hover { background: var(--gold-bright); transform: translateY(-2px); }
+.btn-outline {
+  background: transparent;
+  border: 2px solid var(--gold);
+  color: var(--gold);
+}
+.btn-outline:hover { background: var(--gold-mist); }
+.btn-danger {
+  background: transparent;
+  border: 2px solid var(--danger);
+  color: var(--danger);
+}
+.btn-full { width: 100%; }
+.btn:active { transform: scale(0.97); }
+
+/* ── CHIP/BADGE ── */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-data);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  border: 1px solid;
+  transition: all 0.2s;
+}
+.chip.active { color: var(--ink); }
+
+/* ── INPUT ── */
+.input-group { margin-bottom: 16px; }
+.input-group label {
+  font-family: var(--font-data);
+  font-size: 10px;
+  color: var(--ink-dim);
+  letter-spacing: 0.08em;
+  display: block;
+  margin-bottom: 4px;
+}
+.input-group input[type="number"] {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+  background: var(--void);
+  color: var(--ink);
+  font-family: var(--font-data);
+  font-size: 14px;
+}
+input:focus { outline: none; border-color: var(--gold); }
+.range-row {
+  display: flex; align-items: center; gap: 12px;
+}
+.range-row input[type="range"] {
+  flex: 1;
+  accent-color: var(--gold);
+}
+
+/* ── TIMER ── */
+.timer-ring {
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  border: 3px solid var(--line);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-data);
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--gold-bright);
+}
+.timer-ring.urgent { border-color: var(--danger); color: var(--danger); animation: pulse 0.6s infinite; }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+/* ── SCREEN 1: HOME ── */
+.home-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  padding: 0 32px;
+  gap: 24px;
+}
+.home-logo {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 48px;
+  letter-spacing: 0.12em;
+  background: linear-gradient(180deg, var(--gold-bright), var(--gold) 40%, var(--gold-deep));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 2px 8px rgba(212,175,55,0.3));
+}
+.home-subtitle {
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--ink-dim);
+  font-weight: 300;
+}
+
+/* Floating particles */
+.particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.particle {
+  position: absolute;
+  width: 4px; height: 4px;
+  background: var(--gold);
+  border-radius: 50%;
+  opacity: 0;
+  animation: float 4s infinite;
+}
+@keyframes float {
+  0% { transform: translateY(100%) scale(0); opacity: 0; }
+  20% { opacity: 0.6; }
+  80% { opacity: 0.3; }
+  100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
+}
+
+/* ── GRID CARDS ── */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+/* ── PLAYER LIST ── */
+.player-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--obsidian);
+  margin-bottom: 8px;
+}
+.player-avatar {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+.player-info { flex: 1; }
+.player-name { font-size: 14px; font-weight: 500; }
+.player-status { font-size: 11px; color: var(--ink-dim); }
+.admin-badge {
+  color: var(--gold);
+  font-family: var(--font-data);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  padding: 2px 6px;
+  border: 1px solid var(--gold);
+  border-radius: var(--radius-sm);
+}
+
+/* ── DOCK ── */
+.dock {
+  position: sticky;
+  bottom: 0;
+  background: linear-gradient(to top, var(--obsidian) 80%, transparent);
+  padding: 16px 20px;
+  border-top: 1px solid var(--line);
+}
+.dock-slots {
+  display: flex; gap: 8px;
+  margin-bottom: 12px;
+}
+.dock-slot {
+  width: 52px; height: 52px;
+  border: 2px dashed var(--line);
+  border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-data);
+  color: var(--ink-dim);
+  font-size: 10px;
+}
+.dock-slot.filled {
+  border-style: solid;
+  border-color: var(--gold-deep);
+  background: var(--obsidian-2);
+  font-family: var(--font-display);
+  font-size: 9px;
+  color: var(--ink);
+  text-align: center;
+  line-height: 1.2;
+}
+
+/* ── DUEL SCREEN ── */
+.duel-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 12px;
+}
+.opponent-area {
+  text-align: center;
+  margin-bottom: 16px;
+}
+.opponent-area .cards-row {
+  display: flex; gap: 8px; justify-content: center;
+}
+.card-back {
+  width: 70px; height: 98px;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--line);
+  background: linear-gradient(135deg, var(--obsidian-2), var(--void));
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display);
+  font-size: 11px;
+  color: var(--gold-deep);
+  letter-spacing: 0.1em;
+  opacity: 0.6;
+}
+.score-board {
+  display: flex; align-items: center; justify-content: center;
+  gap: 12px;
+  font-family: var(--font-data);
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--gold-bright);
+  margin: 12px 0;
+}
+.score-divider { color: var(--ink-dim); }
+
+.arena {
+  background: var(--void);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  min-height: 160px;
+  text-align: center;
+  margin: 12px 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display);
+  font-size: 22px;
+  color: var(--ink-dim);
+}
+
+.attribute-select {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin: 12px 0;
+}
+.attr-btn {
+  padding: 12px 8px;
+  border: 2px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--obsidian);
+  color: var(--ink);
+  font-family: var(--font-data);
+  font-size: 10px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s;
+}
+.attr-btn:hover { border-color: var(--gold); }
+.attr-btn.selected { border-color: var(--gold); background: var(--gold-mist); }
+
+/* ── RANKING TABLE ── */
+.ranking-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+}
+.ranking-table th {
+  font-family: var(--font-data);
+  font-size: 9px;
+  color: var(--ink-dim);
+  letter-spacing: 0.08em;
+  text-align: left;
+  padding: 8px 6px;
+  border-bottom: 1px solid var(--line);
+}
+.ranking-table td {
+  padding: 10px 6px;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--font-data);
+  font-size: 12px;
+}
+.ranking-table tr.my-row {
+  background: var(--gold-mist);
+}
+.ranking-table tr.leader td:first-child::before {
+  content: '👑 ';
+  font-size: 14px;
+}
+
+/* ── PODIUM ── */
+.podium {
+  display: flex; align-items: flex-end; justify-content: center;
+  gap: 8px;
+  height: 140px;
+  margin: 24px 0;
+}
+.podium-place {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 6px;
+}
+.podium-col {
+  width: 70px;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.podium-col.gold { height: 100px; background: linear-gradient(180deg, var(--gold-bright), var(--gold-deep)); }
+.podium-col.silver { height: 68px; background: linear-gradient(180deg, #E8E8E8, #A0A0A0); }
+.podium-col.bronze { height: 44px; background: linear-gradient(180deg, #E8A87C, #8B5E3C); }
+.podium-name {
+  font-family: var(--font-display);
+  font-size: 11px;
+  color: var(--ink);
+}
+
+/* ── TOAST ── */
+.toast {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--obsidian-2);
+  border: 1px solid var(--danger);
+  border-radius: var(--radius-md);
+  padding: 10px 16px;
+  font-size: 12px;
+  color: var(--danger);
+  z-index: 10;
+  animation: toastIn 0.3s ease;
+}
+@keyframes toastIn { from { opacity: 0; transform: translateX(-50%) translateY(-20px); } }
+
+/* ── QR CODE (fake) ── */
+.qr-placeholder {
+  width: 140px; height: 140px;
+  border: 2px solid var(--line);
+  border-radius: var(--radius-md);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 12px;
+  background: var(--ink);
+  color: var(--void);
+  font-family: var(--font-data);
+  font-size: 11px;
+}
+
+/* ── PROGRESS BAR ── */
+.progress-bar {
+  height: 6px;
+  background: var(--obsidian);
+  border-radius: 3px;
+  overflow: hidden;
+  margin: 8px 0;
+}
+.progress-fill {
+  height: 100%;
+  border-radius: 3px;
+  background: var(--gold);
+  transition: width 1s linear;
+}
+.progress-fill.urgent { background: var(--danger); }
+
+/* ── SECTION ── */
+.section-title {
+  font-family: var(--font-display);
+  font-size: 18px;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+.section-eyebrow {
+  font-family: var(--font-data);
+  font-size: 10px;
+  color: var(--gold);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+/* ── INFO ROW ── */
+.info-row {
+  display: flex; justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--line);
+}
+.info-label { color: var(--ink-dim); font-size: 13px; }
+.info-value { font-family: var(--font-data); font-size: 13px; color: var(--gold-bright); }
+
+/* ── MODAL ── */
+.modal-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 20;
+}
+.modal-box {
+  background: var(--obsidian-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  width: 280px;
+  text-align: center;
+}
+.modal-box h3 { font-family: var(--font-display); color: var(--gold); margin-bottom: 12px; font-size: 16px; }
+.modal-box p { font-size: 13px; color: var(--ink-dim); margin-bottom: 16px; }
+
+/* ── TABS ── */
+.franchise-tabs {
+  display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 12px;
+}
+
+/* ── VALIDATION ── */
+.validation-error { color: var(--danger); font-size: 11px; margin-top: 4px; }
+.validation-warning { color: var(--warning); font-size: 11px; margin-top: 4px; }
+
+/* ── RECONNECT ── */
+.reconnect-icon {
+  font-size: 56px;
+  text-align: center;
+  margin-bottom: 16px;
+  opacity: 0.6;
+}
+.gold-text {
+  font-family: var(--font-display);
+  color: var(--gold);
+}
+.static-effect {
+  position: absolute;
+  inset: 0;
+  opacity: 0.03;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(255,255,255,0.05) 2px,
+    rgba(255,255,255,0.05) 4px
+  );
+  animation: staticMove 0.1s infinite;
+}
+@keyframes staticMove {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(4px); }
+}
+</style>
+</head>
+<body>
+
+<!-- ══ Sidebar ══ -->
+<nav class="sidebar">
+  <h2>COLOSSUS</h2>
+  <button class="active" onclick="showScreen(0)">
+    🏠 Home <span class="num">01</span>
+  </button>
+  <button onclick="showScreen(1)">
+    ⚙️ Criar Sala <span class="num">02</span>
+  </button>
+  <button onclick="showScreen(2)">
+    🚪 Lobby <span class="num">03</span>
+  </button>
+  <button onclick="showScreen(3)">
+    📦 Draft <span class="num">04</span>
+  </button>
+  <button onclick="showScreen(4)">
+    ⚔️ Duelo <span class="num">05</span>
+  </button>
+  <button onclick="showScreen(5)">
+    🏆 Ranking <span class="num">06</span>
+  </button>
+  <button onclick="showScreen(6)">
+    🥇 Fim de Partida <span class="num">07</span>
+  </button>
+  <button onclick="showScreen(7)">
+    🔗 Reconexão <span class="num">08</span>
+  </button>
+</nav>
+
+<!-- ══ Main Area ══ -->
+<div class="main">
+  <div class="phone">
+
+    <!-- Status Bar -->
+    <div class="status-bar">
+      <span>9:41</span>
+      <span>▮▮▮▮ 📶 🔋</span>
+    </div>
+
+    <!-- ═══════════ SCREEN 1: HOME ═══════════ -->
+    <div class="screen active" id="screen-0">
+      <div class="particles" id="particles"></div>
+      <div class="home-screen">
+        <h1 class="home-logo">COLOSSUS</h1>
+        <p class="home-subtitle">O card game cross-franchise definitivo</p>
+        <button class="btn btn-primary btn-full" onclick="showScreen(1)">CRIAR PARTIDA</button>
+        <button class="btn btn-outline btn-full" onclick="showScreen(2)">ENTRAR NA PARTIDA</button>
+      </div>
+    </div>
+
+    <!-- ═══════════ SCREEN 2: CRIAR SALA ═══════════ -->
+    <div class="screen" id="screen-1">
+      <div class="screen-content">
+        <div class="top-bar">
+          <button class="back-btn" onclick="showScreen(0)">←</button>
+          <span class="title">CRIAR SALA</span>
+          <span style="width:32px"></span>
+        </div>
+
+        <div class="input-group">
+          <label>PERSONAGENS POR TIME (2–5)</label>
+          <input type="number" min="2" max="5" value="3" style="width:72px" onchange="validateConfig()">
+        </div>
+
+        <div class="input-group">
+          <label>SALDO INICIAL</label>
+          <input type="number" min="100" value="1500" onchange="validateConfig()">
+        </div>
+
+        <div class="input-group">
+          <label>TETO DE PREÇO</label>
+          <input type="number" min="100" value="2000" onchange="validateConfig()">
+        </div>
+
+        <div class="input-group">
+          <label>TEMPO DO DRAFT (segundos)</label>
+          <input type="number" min="0" value="300" placeholder="0 = SEM LIMITE" onchange="validateConfig()">
+        </div>
+
+        <div class="input-group">
+          <label>LIMITE DE JOGADORES</label>
+          <input type="number" min="2" max="16" value="8" onchange="validateConfig()">
+        </div>
+
+        <div style="margin:20px 0; padding:12px; border:1px solid var(--line); border-radius:var(--radius-md); background:var(--void)">
+          <div style="font-family:var(--font-data); font-size:10px; color:var(--gold); letter-spacing:0.1em; margin-bottom:8px">RESUMO DA CONFIGURAÇÃO</div>
+          <div class="info-row"><span class="info-label">Personagens/Time</span><span class="info-value">3</span></div>
+          <div class="info-row"><span class="info-label">Saldo Inicial</span><span class="info-value">1.500</span></div>
+          <div class="info-row"><span class="info-label">Teto de Preço</span><span class="info-value">2.000</span></div>
+          <div class="info-row"><span class="info-label">Preço Mínimo Total</span><span class="info-value">300 (OK ✓)</span></div>
+        </div>
+
+        <div class="validation-error" id="val-error" style="display:none"></div>
+        <div class="validation-warning" id="val-warning" style="display:none"></div>
+
+        <button class="btn btn-primary btn-full" onclick="showScreen(2)">CRIAR PARTIDA</button>
+      </div>
+    </div>
+
+    <!-- ═══════════ SCREEN 3: LOBBY ═══════════ -->
+    <div class="screen" id="screen-2">
+      <div class="screen-content">
+        <div class="top-bar">
+          <button class="back-btn" onclick="showScreen(0)">←</button>
+          <span class="title">SALA DE ESPERA</span>
+          <span style="width:32px"></span>
+        </div>
+
+        <div style="font-family:var(--font-data); font-size:14px; color:var(--ink-dim); margin-bottom:12px">
+          ID: <span style="color:var(--gold-bright); user-select:all">XK7M-9Q2P</span>
+        </div>
+
+        <div class="qr-placeholder">━ QR CODE ━</div>
+        <button class="btn btn-outline btn-full" style="margin-bottom:20px; font-size:12px">
+          📋 COPIAR LINK
+        </button>
+
+        <div style="font-family:var(--font-data); font-size:10px; color:var(--gold); letter-spacing:0.15em; margin-bottom:8px">JOGADORES (2/8)</div>
+
+        <div class="player-row">
+          <div class="player-avatar" style="background:var(--gold)">J</div>
+          <div class="player-info">
+            <div class="player-name">João (Você)</div>
+            <div class="player-status">Online</div>
+          </div>
+          <span class="admin-badge">ADMIN</span>
+        </div>
+
+        <div class="player-row">
+          <div class="player-avatar" style="background:var(--marvel)">M</div>
+          <div class="player-info">
+            <div class="player-name">Maria</div>
+            <div class="player-status">Online</div>
+          </div>
+        </div>
+
+        <div style="margin-top:20px; padding:12px; border:1px solid var(--line); border-radius:var(--radius-md)">
+          <div style="font-family:var(--font-data); font-size:10px; color:var(--gold); letter-spacing:0.1em; margin-bottom:6px">CONFIGURAÇÃO</div>
+          <div class="info-row"><span class="info-label">Personagens</span><span class="info-value">3</span></div>
+          <div class="info-row"><span class="info-label">Saldo</span><span class="info-value">1.500</span></div>
+          <div class="info-row"><span class="info-label">Draft</span><span class="info-value">5 min</span></div>
+        </div>
+
+        <button class="btn btn-primary btn-full" style="margin-top:16px" onclick="showScreen(3)">INICIAR PARTIDA</button>
+      </div>
+    </div>
+
+    <!-- ═══════════ SCREEN 4: DRAFT ═══════════ -->
+    <div class="screen" id="screen-3">
+      <div class="screen-content" style="padding-bottom:0">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px">
+          <div>
+            <div class="section-eyebrow">DRAFT</div>
+            <div class="section-title">Monte seu Time</div>
+          </div>
+          <div class="timer-ring" id="draft-timer">300</div>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; margin-bottom:8px">
+          <span style="font-family:var(--font-data); font-size:12px">Saldo: <strong style="color:var(--gold-bright)">1.500</strong></span>
+          <span style="font-family:var(--font-data); font-size:12px; color:var(--ink-dim)">2/3 selecionados</span>
+        </div>
+
+        <div class="franchise-tabs">
+          <span class="chip active" style="color:var(--ink); border-color:var(--gold)">TODOS</span>
+          <span class="chip" style="color:var(--pokemon); border-color:var(--pokemon)">PKMN</span>
+          <span class="chip" style="color:var(--marvel); border-color:var(--marvel)">MARVEL</span>
+          <span class="chip" style="color:var(--yugioh); border-color:var(--yugioh)">YGO</span>
+          <span class="chip" style="color:var(--dragonball); border-color:var(--dragonball)">DBZ</span>
+          <span class="chip" style="color:var(--football); border-color:var(--football)">FUT</span>
+        </div>
+
+        <div class="card-grid" style="margin-bottom:16px">
+          <!-- Card 1 - Pokémon -->
+          <div class="char-card" style="--accent:var(--pokemon)">
+            <div class="card-inner">
+              <div class="card-art" style="position:relative; background:radial-gradient(circle at top, rgba(224,41,62,0.2), transparent 70%)">
+                <div class="card-seal" style="color:var(--pokemon)">
+                  <span class="ovr-num">84</span><span class="ovr-label">OVR</span>
+                </div>
+              </div>
+              <div class="card-band" style="background:var(--pokemon)"></div>
+              <div class="card-body" style="color:rgba(224,41,62,0.05)">
+                <div class="card-origin" style="color:var(--pokemon)">Pokémon</div>
+                <div class="card-name">Charizard</div>
+                <div class="card-stats">
+                  <div class="stat-box"><div class="stat-label">ATK</div><div class="stat-value">82</div></div>
+                  <div class="stat-box"><div class="stat-label">DEF</div><div class="stat-value">78</div></div>
+                  <div class="stat-box"><div class="stat-label">SPD</div><div class="stat-value">90</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2 - Marvel -->
+          <div class="char-card" style="--accent:var(--marvel)">
+            <div class="card-inner">
+              <div class="card-art" style="position:relative; background:radial-gradient(circle at top, rgba(128,85,232,0.2), transparent 70%)">
+                <div class="card-seal" style="color:var(--marvel)">
+                  <span class="ovr-num">91</span><span class="ovr-label">OVR</span>
+                </div>
+              </div>
+              <div class="card-band" style="background:var(--marvel)"></div>
+              <div class="card-body" style="color:rgba(128,85,232,0.05)">
+                <div class="card-origin" style="color:var(--marvel)">Marvel</div>
+                <div class="card-name">Thor</div>
+                <div class="card-stats">
+                  <div class="stat-box"><div class="stat-label">ATK</div><div class="stat-value">87</div></div>
+                  <div class="stat-box"><div class="stat-label">DEF</div><div class="stat-value">85</div></div>
+                  <div class="stat-box"><div class="stat-label">PWR</div><div class="stat-value">95</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3 - Yu-Gi-Oh! -->
+          <div class="char-card" style="--accent:var(--yugioh)">
+            <div class="card-inner">
+              <div class="card-art" style="position:relative; background:radial-gradient(circle at top, rgba(232,67,147,0.2), transparent 70%)">
+                <div class="card-seal" style="color:var(--yugioh)">
+                  <span class="ovr-num">88</span><span class="ovr-label">OVR</span>
+                </div>
+              </div>
+              <div class="card-band" style="background:var(--yugioh)"></div>
+              <div class="card-body" style="color:rgba(232,67,147,0.05)">
+                <div class="card-origin" style="color:var(--yugioh)">Yu-Gi-Oh!</div>
+                <div class="card-name">Dark Magician</div>
+                <div class="card-stats">
+                  <div class="stat-box"><div class="stat-label">ATK</div><div class="stat-value">83</div></div>
+                  <div class="stat-box"><div class="stat-label">DEF</div><div class="stat-value">79</div></div>
+                  <div class="stat-box"><div class="stat-label">LVL</div><div class="stat-value">92</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 4 - Dragon Ball -->
+          <div class="char-card" style="--accent:var(--dragonball)">
+            <div class="card-inner">
+              <div class="card-art" style="position:relative; background:radial-gradient(circle at top, rgba(255,122,41,0.2), transparent 70%)">
+                <div class="card-seal" style="color:var(--dragonball)">
+                  <span class="ovr-num">94</span><span class="ovr-label">OVR</span>
+                </div>
+              </div>
+              <div class="card-band" style="background:var(--dragonball)"></div>
+              <div class="card-body" style="color:rgba(255,122,41,0.05)">
+                <div class="card-origin" style="color:var(--dragonball)">Dragon Ball</div>
+                <div class="card-name">Goku</div>
+                <div class="card-stats">
+                  <div class="stat-box"><div class="stat-label">ATK</div><div class="stat-value">97</div></div>
+                  <div class="stat-box"><div class="stat-label">DEF</div><div class="stat-value">88</div></div>
+                  <div class="stat-box"><div class="stat-label">HP</div><div class="stat-value">96</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DOCK -->
+      <div class="dock">
+        <div class="dock-slots">
+          <div class="dock-slot filled" style="border-color:var(--marvel); color:var(--marvel)">Thor</div>
+          <div class="dock-slot filled" style="border-color:var(--dragonball); color:var(--dragonball)">Goku</div>
+          <div class="dock-slot">3</div>
+        </div>
+        <button class="btn btn-primary btn-full" onclick="showScreen(4)">CONFIRMAR TIME</button>
+      </div>
+    </div>
+
+    <!-- ═══════════ SCREEN 5: DUELO ═══════════ -->
+    <div class="screen" id="screen-4">
+      <div class="screen-content">
+        <!-- Opponent -->
+        <div class="duel-header">
+          <span style="font-family:var(--font-display); color:var(--ink-dim); font-size:13px">MARIA</span>
+          <div class="timer-ring urgent" style="width:48px; height:48px; font-size:13px">42</div>
+        </div>
+
+        <div class="opponent-area">
+          <div class="cards-row">
+            <div class="card-back">COLOS<br>SUS</div>
+            <div class="card-back">COLOS<br>SUS</div>
+            <div class="card-back">COLOS<br>SUS</div>
+          </div>
+          <div class="score-board">
+            <span>2</span><span class="score-divider">—</span><span>1</span>
+          </div>
+        </div>
+
+        <!-- Arena -->
+        <div class="arena">
+          <div style="display:flex; align-items:center; gap:20px; justify-content:center">
+            <div style="font-family:var(--font-data); font-size:10px; color:var(--ink-dim)">AGUARDANDO<br>JOGADA</div>
+          </div>
+        </div>
+
+        <!-- My cards -->
+        <div style="overflow-x:auto; display:flex; gap:8px; padding-bottom:8px">
+          <div class="char-card" style="--accent:var(--marvel); min-width:120px; padding:6px">
+            <div class="card-inner">
+              <div class="card-art" style="height:60px; background:radial-gradient(circle at top, rgba(128,85,232,0.2), transparent 70%); font-size:20px"></div>
+              <div class="card-body" style="padding:6px; color:rgba(128,85,232,0.05)">
+                <div class="card-name" style="font-size:11px">Thor</div>
+                <div class="card-stats" style="margin-top:4px">
+                  <div class="stat-box" style="padding:2px"><div class="stat-label" style="font-size:6px">ATK</div><div class="stat-value" style="font-size:10px">87</div></div>
+                  <div class="stat-box" style="padding:2px"><div class="stat-label" style="font-size:6px">DEF</div><div class="stat-value" style="font-size:10px">85</div></div>
+                  <div class="stat-box" style="padding:2px"><div class="stat-label" style="font-size:6px">PWR</div><div class="stat-value" style="font-size:10px">95</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="char-card" style="--accent:var(--dragonball); min-width:120px; padding:6px">
+            <div class="card-inner">
+              <div class="card-art" style="height:60px; background:radial-gradient(circle at top, rgba(255,122,41,0.2), transparent 70%); font-size:20px"></div>
+              <div class="card-body" style="padding:6px; color:rgba(255,122,41,0.05)">
+                <div class="card-name" style="font-size:11px">Goku</div>
+                <div class="card-stats" style="margin-top:4px">
+                  <div class="stat-box" style="padding:2px"><div class="stat-label" style="font-size:6px">ATK</div><div class="stat-value" style="font-size:10px">97</div></div>
+                  <div class="stat-box" style="padding:2px"><div class="stat-label" style="font-size:6px">DEF</div><div class="stat-value" style="font-size:10px">88</div></div>
+                  <div class="stat-box" style="padding:2px"><div class="stat-label" style="font-size:6px">HP</div><div class="stat-value" style="font-size:10px">96</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Attribute Selection -->
+        <div class="attribute-select">
+          <button class="attr-btn selected">⚔️ ATK</button>
+          <button class="attr-btn">🛡️ DEF</button>
+          <button class="attr-btn">⭐ PWR</button>
+        </div>
+
+        <button class="btn btn-primary btn-full">CONFIRMAR JOGADA</button>
+      </div>
+    </div>
+
+    <!-- ═══════════ SCREEN 6: RANKING ═══════════ -->
+    <div class="screen" id="screen-5">
+      <div class="screen-content">
+        <div class="top-bar">
+          <span style="width:32px"></span>
+          <span class="title">TORNEIO</span>
+          <span style="width:32px"></span>
+        </div>
+
+        <div class="section-eyebrow">CLASSIFICAÇÃO</div>
+        <div class="section-title">Ranking</div>
+
+        <table class="ranking-table">
+          <thead>
+            <tr><th>#</th><th>JOGADOR</th><th>PTS</th><th>V</th><th>E</th><th>D</th></tr>
+          </thead>
+          <tbody>
+            <tr class="leader" style="background:var(--gold-mist)">
+              <td>👑 1</td><td style="color:var(--gold-bright); font-family:var(--font-body)">João (Você)</td>
+              <td style="color:var(--gold-bright)">8</td><td>4</td><td>0</td><td>0</td>
+            </tr>
+            <tr>
+              <td>2</td><td>Maria</td><td>6</td><td>3</td><td>0</td><td>1</td>
+            </tr>
+            <tr>
+              <td>3</td><td>Pedro</td><td>4</td><td>2</td><td>0</td><td>2</td>
+            </tr>
+            <tr>
+              <td>4</td><td>Ana</td><td>2</td><td>1</td><td>0</td><td>3</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="section-eyebrow" style="margin-top:20px">CONFRONTOS</div>
+        <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:8px">
+          <div style="padding:8px 12px; border:1px solid var(--line); border-radius:var(--radius-sm); font-size:11px; color:var(--ink-dim)">João vs Maria <span style="color:var(--success)">✓</span></div>
+          <div style="padding:8px 12px; border:1px solid var(--line); border-radius:var(--radius-sm); font-size:11px; color:var(--ink-dim)">João vs Pedro <span style="color:var(--success)">✓</span></div>
+          <div style="padding:8px 12px; border:1px solid var(--line); border-radius:var(--radius-sm); font-size:11px; color:var(--ink-dim)">João vs Ana <span style="color:var(--success)">✓</span></div>
+          <div style="padding:8px 12px; border:1px solid var(--gold); border-radius:var(--radius-sm); font-size:11px; color:var(--gold)">Maria vs Pedro ◷ AGUARDANDO</div>
+          <div style="padding:8px 12px; border:1px solid var(--line); border-radius:var(--radius-sm); font-size:11px; color:var(--ink-dim)">Maria vs Ana <span style="color:var(--success)">✓</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ SCREEN 7: FIM DE PARTIDA ═══════════ -->
+    <div class="screen" id="screen-6">
+      <div class="particles" id="particles2"></div>
+      <div class="screen-content" style="text-align:center; padding-top:40px">
+        <div style="font-family:var(--font-display); font-size:32px; letter-spacing:0.12em; background:linear-gradient(180deg, var(--gold-bright), var(--gold) 40%, var(--gold-deep)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; margin-bottom:8px">
+          🌟 CAMPEÃO! 🌟
+        </div>
+        <p style="font-family:var(--font-body); color:var(--ink-dim); margin-bottom:24px; font-size:14px">
+          Parabéns! Você venceu o torneio Colossus.
+        </p>
+
+        <!-- Podium -->
+        <div class="podium">
+          <div class="podium-place">
+            <span style="font-family:var(--font-display); font-size:10px; color:var(--ink-dim)">2º Maria</span>
+            <div class="podium-col silver"></div>
+          </div>
+          <div class="podium-place">
+            <span style="font-family:var(--font-display); font-size:12px; color:var(--gold-bright)">👑 1º Você</span>
+            <div class="podium-col gold"></div>
+          </div>
+          <div class="podium-place">
+            <span style="font-family:var(--font-display); font-size:10px; color:var(--ink-dim)">3º Pedro</span>
+            <div class="podium-col bronze"></div>
+          </div>
+        </div>
+
+        <div style="margin-top:20px; padding:16px; border:1px solid var(--line); border-radius:var(--radius-md); background:var(--obsidian)">
+          <div style="font-family:var(--font-data); font-size:10px; color:var(--gold); letter-spacing:0.15em; margin-bottom:12px">SUAS ESTATÍSTICAS</div>
+          <div class="info-row"><span class="info-label">Melhor Card</span><span class="info-value" style="font-family:var(--font-body)">Goku (94 OVR)</span></div>
+          <div class="info-row"><span class="info-label">Mais Rodadas Vencidas</span><span class="info-value">Thor (8 rounds)</span></div>
+          <div class="info-row"><span class="info-label">Maior Upset</span><span class="info-value">Dark Magician vs Lv.91</span></div>
+        </div>
+
+        <button class="btn btn-primary btn-full" style="margin-top:20px" onclick="showScreen(0)">NOVA PARTIDA</button>
+        <button class="btn btn-outline btn-full" style="margin-top:8px">📤 COMPARTILHAR RESULTADO</button>
+      </div>
+    </div>
+
+    <!-- ═══════════ SCREEN 8: RECONEXÃO ═══════════ -->
+    <div class="screen" id="screen-7">
+      <div class="static-effect"></div>
+      <div class="screen-content" style="text-align:center; padding-top:60px">
+        <div class="reconnect-icon">📡</div>
+        <div style="font-family:var(--font-display); font-size:18px; color:var(--gold); margin-bottom:8px">
+          SEU ADVERSÁRIO PERDEU A CONEXÃO
+        </div>
+        <p style="font-size:13px; color:var(--ink-dim); margin-bottom:24px">
+          Maria foi desconectada. Se ela não reconectar em 2 minutos, você vence por W.O.
+        </p>
+
+        <div class="timer-ring urgent" style="width:80px; height:80px; font-size:24px; margin:16px auto">1:52</div>
+        <div class="progress-bar" style="width:200px; margin:12px auto">
+          <div class="progress-fill urgent" style="width:93%"></div>
+        </div>
+
+        <div class="qr-placeholder" style="margin-top:24px">━ QR CODE ━</div>
+        <button class="btn btn-outline btn-full" style="margin-top:12px; font-size:12px">
+          📋 COPIAR LINK DE RECONEXÃO
+        </button>
+
+        <div style="margin-top:24px; padding:12px; border:1px solid var(--line); border-radius:var(--radius-md); background:var(--gold-mist)">
+          <div style="font-family:var(--font-data); font-size:10px; color:var(--gold); letter-spacing:0.08em">
+            VITÓRIA AUTOMÁTICA EM CASO DE TIMEOUT
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function showScreen(n) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + n).classList.add('active');
+  document.querySelectorAll('.sidebar button').forEach((b,i) => b.classList.toggle('active', i === n));
+}
+
+function validateConfig() {
+  const e = document.getElementById('val-error');
+  const w = document.getElementById('val-warning');
+  e.style.display = 'none';
+  w.style.display = 'none';
+  // Simulated validation
+}
+
+// Generate particles on home screen
+(function() {
+  const container = document.getElementById('particles');
+  if (!container) return;
+  for (let i = 0; i < 20; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.animationDelay = Math.random() * 4 + 's';
+    p.style.animationDuration = (3 + Math.random() * 4) + 's';
+    p.style.width = p.style.height = (2 + Math.random() * 4) + 'px';
+    container.appendChild(p);
+  }
+})();
+
+// Particles for victory screen
+(function() {
+  const container = document.getElementById('particles2');
+  if (!container) return;
+  for (let i = 0; i < 30; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.animationDelay = Math.random() * 3 + 's';
+    p.style.animationDuration = (2 + Math.random() * 5) + 's';
+    p.style.width = p.style.height = (2 + Math.random() * 5) + 'px';
+    container.appendChild(p);
+  }
+})();
+</script>
+
+</body>
+</html>

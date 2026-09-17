@@ -79,6 +79,34 @@ npm run build            # Build de produção
 npm run start            # Servidor de produção
 ```
 
+### Skills de IA
+
+O projeto depende das seguintes skills de IA para guiar agentes (OpenCode):
+
+| # | Skill | Repositório | Domínio |
+|---|---|---|---|
+| 1 | `modern-javascript-patterns` | `wshobson/agents` | JavaScript ES6+ |
+| 2 | `typescript-advanced-types` | `wshobson/agents` | TypeScript |
+| 3 | `nextjs-app-router-patterns` | `wshobson/agents` | Next.js App Router |
+| 4 | `tailwind-design-system` | `wshobson/agents` | Tailwind CSS v4 |
+| 5 | `react-state-management` | `wshobson/agents` | Zustand/Redux/Jotai |
+| 6 | `javascript-testing-patterns` | `wshobson/agents` | Testes unitários (Vitest) |
+| 7 | `vercel-react-best-practices` | `vercel-labs/agent-skills` | React performance (70 regras) |
+| 8 | `vercel-composition-patterns` | `vercel-labs/agent-skills` | React arquitetura |
+| 9 | `shadcn` | `shadcn/ui` | shadcn/ui |
+| 10 | `playwright-best-practices` | `currents-dev/playwright-best-practices-skill` | Testes E2E (Playwright) |
+
+As skills ficam versionadas em `skills-lock.json` e instaladas em `.agents/skills/`.
+
+**Ao clonar o repositório**, sincronize as skills:
+
+```bash
+nvm use v24.20
+npx skills update
+```
+
+> `npx skills update` lê o `skills-lock.json` e instala/copia as skills para o diretório local `.agents/skills/`.
+
 ### Variáveis de ambiente
 ```
 AXIOM_DATASET=colossus-logs    # Dataset do Axiom (logging em produção)

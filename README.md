@@ -66,6 +66,34 @@ npm run start        # Servidor de produção
 npm run lint         # ESLint
 ```
 
+### Skills de IA
+
+O projeto utiliza [skills.sh](https://skills.sh) para guiar agentes de IA (OpenCode) com boas práticas específicas de cada tecnologia.
+
+As skills estão versionadas em `skills-lock.json` e instaladas em `.agents/skills/`.
+
+**Ao clonar o repositório**, sincronize as skills:
+
+```bash
+nvm use v24.20
+npx skills update
+```
+
+#### Skills instaladas
+
+| # | Skill | Domínio |
+|---|---|---|
+| 1 | `modern-javascript-patterns` | JavaScript ES6+ |
+| 2 | `typescript-advanced-types` | TypeScript |
+| 3 | `nextjs-app-router-patterns` | Next.js App Router |
+| 4 | `tailwind-design-system` | Tailwind CSS v4 |
+| 5 | `react-state-management` | Zustand/Redux/Jotai |
+| 6 | `javascript-testing-patterns` | Testes unitários (Vitest) |
+| 7 | `vercel-react-best-practices` | React performance |
+| 8 | `vercel-composition-patterns` | React arquitetura |
+| 9 | `shadcn` | shadcn/ui |
+| 10 | `playwright-best-practices` | Testes E2E (Playwright) |
+
 ---
 
 ## 📁 Estrutura do Projeto
